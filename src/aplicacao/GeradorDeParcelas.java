@@ -1,7 +1,9 @@
 package aplicacao;
 
 import aplicacao.servicos.Paypal;
+import aplicacao.servicos.ServicoDePagamentoOnline;
 import dominio.entidades.Contrato;
+import dominio.entidades.Parcela;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -14,11 +16,13 @@ public class GeradorDeParcelas {
     private static Scanner scanner = new Scanner(System.in);
     private static SimpleDateFormat dataFormatada = new SimpleDateFormat("dd/MM/yyyy");
     private static Contrato contrato;
+    private static ServicoDePagamentoOnline servicoDePagamentoOnline;
 
     public static void main(String[] args) throws ParseException {
         obterDadosDoContrato();
         Integer numeroDeParcelasDoContrato = Integer.valueOf(obterDados("Em quantas vezes este contrato será parcelado?"));
-        new ProcessadorDePagamentoDeContrato(contrato).processar(new Paypal(), numeroDeParcelasDoContrato);
+        servicoDePagamentoOnline = new Paypal();
+        new ProcessadorDePagamentoDeContrato(contrato).processar(servicoDePagamentoOnline, numeroDeParcelasDoContrato);
         System.out.println(contrato);
     }
 
